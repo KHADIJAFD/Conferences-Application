@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: keynote-service
+          uri: lb://keynote-service
+          predicates:
+            - Path=/keynotes/**
+          filters:
+            - RewritePath=/wallets/(?<remaining>.*), /${remaining}
+        - id: conference-service
+          uri: lb://conference-service
+          predicates:
+            - Path=/conferences/**
+          filters:
+            - RewritePath=/keynotes/(?<remaining>.*), /${remaining}
